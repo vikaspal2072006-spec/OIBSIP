@@ -64,6 +64,7 @@ def listen():
 speak("Hello! How may I assist you?")
 
 
+
 # Main program
 while True:
 
@@ -72,12 +73,32 @@ while True:
     if not command:
         continue
 
+    # Web Search
+    if command.startswith("search "):
+
+        query = command.replace("search ", "", 1).strip()
+
+        if query:
+            speak("Searching Google for " + query)
+
+            search_url = "https://www.google.com/search?q=" + quote_plus(query)
+
+            webbrowser.open(search_url)
+
+        else:
+            speak("Please tell me what you want to search.")
+
+    # Exit commands
+    elif any(word in command.split() for word in ["stop", "exit", "goodbye"]) or "good bye" in command:
+        speak("Goodbye! Have a nice day.")
+        break
+
     # Greeting
-    if "hello" in command or "hi" in command:
+    elif any(word in command.split() for word in ["hello", "hi","hay","hii"]):
         speak("Hello! Nice to meet you.")
 
     # Asking name
-    elif "name" in command:
+    elif "name" in command.split():
         speak("My name is your personal voice assistant.")
 
     # Asking how are you
@@ -89,33 +110,17 @@ while True:
         speak("I can listen to your voice and answer simple questions.")
 
     # Asking for time
-    elif "time" in command:
+    elif "time" in command.split():
         import datetime
         current_time = datetime.datetime.now().strftime("%I:%M %p")
         speak("The current time is " + current_time)
 
     # Asking for date
-    elif "date" in command:
+    elif "date" in command.split():
         import datetime
         current_date = datetime.datetime.now().strftime("%d %B %Y")
         speak("Today's date is " + current_date)
 
-    # Web search
-    elif command.startswith("search "):
-        query = command.replace("search","",1).strip()
-
-        if query:
-            speak("Searching Google for "+query)
-            search_url = "https://www.google.com/search?q="+quote_plus(query)
-            webbrowser.open(search_url)
-        else:
-            speak("please tell me what you want to search .")
-    # Exit commands
-    elif any(word in command for word in ["stop", "exit", "goodbye", "good bye"]):
-        speak("Goodbye! Have a nice day.")
-        break
-
     # Unknown command
     else:
         speak("Sorry, I don't know that command yet. Please try another command.")
-        
