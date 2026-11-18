@@ -1,6 +1,11 @@
 
 import speech_recognition as sr
 import pyttsx3
+import webbrowser
+from urllib.parse import quote_plus
+
+
+
 
 # Initialize voice assistant
 recognizer = sr.Recognizer()
@@ -95,6 +100,16 @@ while True:
         current_date = datetime.datetime.now().strftime("%d %B %Y")
         speak("Today's date is " + current_date)
 
+    # Web search
+    elif command.startswith("search "):
+        query = command.replace("search","",1).strip()
+
+        if query:
+            speak("Searching Google for "+query)
+            search_url = "https://www.google.com/search?q="+quote_plus(query)
+            webbrowser.open(search_url)
+        else:
+            speak("please tell me what you want to search .")
     # Exit commands
     elif any(word in command for word in ["stop", "exit", "goodbye", "good bye"]):
         speak("Goodbye! Have a nice day.")
@@ -103,3 +118,4 @@ while True:
     # Unknown command
     else:
         speak("Sorry, I don't know that command yet. Please try another command.")
+        
